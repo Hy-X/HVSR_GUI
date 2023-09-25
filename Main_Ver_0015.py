@@ -173,6 +173,60 @@ visualization_dropdown.grid(row=4, column=1, padx=5, pady=5)
 button = ttk.Button(root, text="Calculate HVSR", command=on_button_click, style='AccentButton.TButton')
 button.pack(padx=20, pady=10)
 
+# Function to handle the "Stations options" in the second dropdown
+def select_stations_options():
+    stations_options_window = tk.Toplevel(root)
+    stations_options_window.title("Select Stations Options")
+
+    def on_proceed_stations():
+        selected_stations = stations_var.get().split('\n')
+        selected_networks = networks_var.get().split('\n')
+        selected_locations = locations_var.get().split('\n')
+        selected_channels = channels_var.get().split('\n')
+
+        selected_file_label.config(
+            text=f"Selected Stations: {', '.join(selected_stations)}\n"
+                 f"Selected Networks: {', '.join(selected_networks)}\n"
+                 f"Selected Locations: {', '.join(selected_locations)}\n"
+                 f"Selected Channels: {', '.join(selected_channels)}"
+        )
+        messagebox.showinfo("Stations Options Selected", "Stations Options selected.")
+        stations_options_window.destroy()  # Close the stations options selection window
+
+    # Create labels and entry fields for Stations Options
+    stations_label = ttk.Label(stations_options_window, text="Stations:")
+    stations_label.grid(row=0, column=0, padx=5, pady=5)
+
+    networks_label = ttk.Label(stations_options_window, text="Networks:")
+    networks_label.grid(row=1, column=0, padx=5, pady=5)
+
+    locations_label = ttk.Label(stations_options_window, text="Locations:")
+    locations_label.grid(row=2, column=0, padx=5, pady=5)
+
+    channels_label = ttk.Label(stations_options_window, text="Channels:")
+    channels_label.grid(row=3, column=0, padx=5, pady=5)
+
+    # Define variables to store the selected Stations Options
+    stations_var = tk.StringVar(value="Station1\nStation2\nStation3")
+    networks_var = tk.StringVar(value="Network1\nNetwork2\nNetwork3")
+    locations_var = tk.StringVar(value="Location1\nLocation2\nLocation3")
+    channels_var = tk.StringVar(value="Channel1\nChannel2\nChannel3")
+
+    # Create entry fields for Stations Options
+    ttk.Entry(stations_options_window, textvariable=stations_var).grid(row=0, column=1, padx=5, pady=5)
+    ttk.Entry(stations_options_window, textvariable=networks_var).grid(row=1, column=1, padx=5, pady=5)
+    ttk.Entry(stations_options_window, textvariable=locations_var).grid(row=2, column=1, padx=5, pady=5)
+    ttk.Entry(stations_options_window, textvariable=channels_var).grid(row=3, column=1, padx=5, pady=5)
+
+    # Create a "Proceed" button to confirm the selection
+    proceed_button = ttk.Button(stations_options_window, text="Proceed", command=on_proceed_stations)
+    proceed_button.grid(row=4, column=0, columnspan=2, padx=5, pady=10)
+
+# In the main code, bind the "Stations options" function to the selection event
+query_dropdown.bind("<<ComboboxSelected>>", lambda event: select_stations_options())
+
+
+
 # Start the GUI main loop
 root.mainloop()
 
